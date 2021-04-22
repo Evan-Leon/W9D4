@@ -10,7 +10,7 @@ const FollowToggle = require("./follow_toggle");
 
 $(() =>{
     $(".follow-toggle").each(function (idx, button){
-        debugger
+        // debugger
         new FollowToggle($(button));
     })
     // setEventHandlers();
