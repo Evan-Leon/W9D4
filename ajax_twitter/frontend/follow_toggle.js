@@ -20,14 +20,22 @@ FollowToggle.prototype.handleClick = function() {
     this.$button.on("click", (e) => {
         e.preventDefault();
         // debugger
-        if (this.initialFollowState == "unfollowed") {
-            twitterAPIUtil.clickFollowAjax(this.userId);
-            this.initialFollowState = "followed";
-        } else if (this.initialFollowState == "followed") {
-            twitterAPIUtil.clickUnfollowAjax(this.userId);
-            this.initialFollowState = "unfollowed";
+        const successCB = () => {
+            if (this.initialFollowState == "unfollowed") {
+                this.initialFollowState = "followed";
+            } else if (this.initialFollowState == "followed") {
+                this.initialFollowState = "unfollowed";
+            }
+            this.render();
         }
-        // this.$button.attr("initialFollowState")
+
+        if (this.initialFollowState == "unfollowed") {
+            twitterAPIUtil.clickFollowAjax(this.userId).then((successCB));
+            // this.initialFollowState = "followed";
+        } else if (this.initialFollowState == "followed") {
+            twitterAPIUtil.clickUnfollowAjax(this.userId).then(successCB);
+            // this.initialFollowState = "unfollowed";
+        }
         
     })
 }
