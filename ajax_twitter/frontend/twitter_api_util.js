@@ -1,18 +1,19 @@
 const twitterAPIUtil = {
 
-  clickFollowAjax: () => {
+  clickFollowAjax: (userId) => {
     return $.ajax({
       method: "POST",
-      url: "/users/:user_id/follow",
-      
+      url:`/users/${userId}/follow`,
+      dataType: "json",
     })
     
   },
   
-  clickUnfollowAjax: () => {
+  clickUnfollowAjax: (userId) => {
     return $.ajax({
       method: "DELETE",
-      url: "/users/:user_id/follow",
+      url: `/users/${userId}/follow`,
+      dataType: "json",
     })
     
 
@@ -20,3 +21,5 @@ const twitterAPIUtil = {
 
 
 }
+
+module.exports = twitterAPIUtil;

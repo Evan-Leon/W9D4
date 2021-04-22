@@ -5,14 +5,16 @@
 /*!***********************************!*\
   !*** ./frontend/follow_toggle.js ***!
   \***********************************/
-/***/ ((module) => {
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-
+const twitterAPIUtil = __webpack_require__(/*! ./twitter_api_util */ "./frontend/twitter_api_util.js");
 function FollowToggle($button){
     this.userId = $button.data("user-id");
     this.initialFollowState = $button.data("initial-follow-state");
     this.$button = $button;
     this.render();
+    this.handleClick();
+    
 }
 
 FollowToggle.prototype.render = function() {
@@ -23,7 +25,58 @@ FollowToggle.prototype.render = function() {
     }
 }
 
+FollowToggle.prototype.handleClick = function() {
+    this.$button.on("click", (e) => {
+        e.preventDefault();
+        // debugger
+        if (this.initialFollowState == "unfollowed") {
+            twitterAPIUtil.clickFollowAjax(this.userId);
+            this.initialFollowState = "followed";
+        } else if (this.initialFollowState == "followed") {
+            twitterAPIUtil.clickUnfollowAjax(this.userId);
+            this.initialFollowState = "unfollowed";
+        }
+        // this.$button.attr("initialFollowState")
+        
+    })
+}
+
+
 module.exports = FollowToggle;
+
+/***/ }),
+
+/***/ "./frontend/twitter_api_util.js":
+/*!**************************************!*\
+  !*** ./frontend/twitter_api_util.js ***!
+  \**************************************/
+/***/ ((module) => {
+
+const twitterAPIUtil = {
+
+  clickFollowAjax: (userId) => {
+    return $.ajax({
+      method: "POST",
+      url:`/users/${userId}/follow`,
+      dataType: "json",
+    })
+    
+  },
+  
+  clickUnfollowAjax: (userId) => {
+    return $.ajax({
+      method: "DELETE",
+      url: `/users/${userId}/follow`,
+      dataType: "json",
+    })
+    
+
+  }
+
+
+}
+
+module.exports = twitterAPIUtil;
 
 /***/ })
 

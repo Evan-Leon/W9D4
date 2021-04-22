@@ -1,9 +1,11 @@
-
+const twitterAPIUtil = require("./twitter_api_util");
 function FollowToggle($button){
     this.userId = $button.data("user-id");
     this.initialFollowState = $button.data("initial-follow-state");
     this.$button = $button;
     this.render();
+    this.handleClick();
+    
 }
 
 FollowToggle.prototype.render = function() {
@@ -17,11 +19,16 @@ FollowToggle.prototype.render = function() {
 FollowToggle.prototype.handleClick = function() {
     this.$button.on("click", (e) => {
         e.preventDefault();
+        // debugger
         if (this.initialFollowState == "unfollowed") {
-            clickFollowAjax();
+            twitterAPIUtil.clickFollowAjax(this.userId);
+            this.initialFollowState = "followed";
         } else if (this.initialFollowState == "followed") {
-            clickUnfollowAjax();
+            twitterAPIUtil.clickUnfollowAjax(this.userId);
+            this.initialFollowState = "unfollowed";
         }
+        // this.$button.attr("initialFollowState")
+        
     })
 }
 
